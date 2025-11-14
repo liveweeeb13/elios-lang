@@ -1,0 +1,48 @@
+# Conditional Logic Examples
+§log[=== Conditional Examples ===]
+
+§var[age; 20]
+§var[score; 92]
+§var[temperature; 22.5]
+§var[name;Marc]
+
+# Basic if/else conditions
+§if[$age >= 18]
+    §log[✅ $name is an adult]
+§else
+    §log[❌ $name is a minor]
+§endif
+
+# Multiple conditions
+§if[$score >= 90]
+    §log[🎉 Excellent score: A]
+§elseif[$score >= 80]
+    §log[👍 Good score: B]
+§elseif[$score >= 70]
+    §log[✅ Average score: C]
+§else
+    §log[📚 Needs improvement: D]
+§endif
+
+# Temperature check
+§if[$temperature > 30]
+    §log[🔥 It's hot outside]
+§elseif[$temperature < 10]
+    §log[❄️ It's cold outside]
+§else
+    §log[🌤️ Pleasant temperature]
+§endif
+
+# Complex conditions with variables
+§var[isWeekend; true]
+§var[hasMoney; true]
+
+§if[$isWeekend == true && $hasMoney == true]
+    §log[💰 Weekend and money - Time to have fun!]
+§elseif[$isWeekend == true && $hasMoney == false]
+    §log[🏠 Weekend but no money - Stay home]
+§else
+    §log[💼 Weekday - Time to work]
+§endif
+
+§log[=== Conditions Complete ===]

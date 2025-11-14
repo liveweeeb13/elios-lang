@@ -1,0 +1,48 @@
+{
+  "name": "elios",
+  "version": "1.2.0",
+  "description": "Interpreter for the Elios programming language",
+  "main": "index.js",
+  "bin": {
+    "elios": "./cli.js"
+  },
+  "scripts": {
+    "start": "node cli.js",
+    "test": "node cli.js examples/basics.elios",
+    "build": "pkg . --targets node18-win-x64 --output dist/elios-win.exe",
+    "build:all": "pkg . --targets node18-win-x64,node18-macos-x64,node18-linux-x64 --out-path dist"
+  },
+  "pkg": {
+    "assets": [
+      "lib/**/*",
+      "docs/**/*",
+      "examples/**/*",
+      "scripts/**/*"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ],
+    "outputPath": "dist"
+  },
+  "keywords": [
+    "elios",
+    "interpreter",
+    "programming-language",
+    "scripting"
+  ],
+  "author": "liveweeeb",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
+  },
+  "files": [
+    "index.js",
+    "cli.js",
+    "lib/*",
+    "exmaples/*",
+    "help.html"
+  ]
+}

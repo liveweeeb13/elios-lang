@@ -1,0 +1,59 @@
+# Simple Game Simulation
+§log[🎮 Game Simulation Starting...]
+§sleep[1000]
+
+§var[playerHealth; 100]
+§var[playerScore; 0]
+§var[level; 1]
+
+§log[Player health: $playerHealth]
+§log[Player score: $playerScore]
+§log[Current level: $level]
+
+# Level 1
+§log[]
+§log[=== LEVEL 1 ===]
+§sleep[500]
+
+§var[enemyAttack; §random[5;15]]
+§var[playerHealth; §sub[$playerHealth;$enemyAttack]]
+§var[playerScore; §add[$playerScore;§random[10;50]]]
+
+§log[Enemy attacks! Damage: $enemyAttack]
+§log[Health remaining: $playerHealth]
+§log[Score: $playerScore]
+
+§sleep[1000]
+
+# Level 2
+§log[]
+§log[=== LEVEL 2 ===]
+§sleep[500]
+
+§var[level; 2]
+§var[healthBonus; §random[10;20]]
+§var[playerHealth; §add[$playerHealth;$healthBonus]]
+§var[playerScore; §add[$playerScore;§random[50;100]]]
+
+§log[Health bonus: +$healthBonus]
+§log[Health: $playerHealth]
+§log[Score: $playerScore]
+
+§sleep[1000]
+
+# Final results
+§log[]
+§log[=== GAME OVER ===]
+§log[Final health: $playerHealth]
+§log[Final score: $playerScore]
+§log[Level reached: $level]
+
+§if[$playerHealth > 0]
+    §log[🎉 You survived!]
+§else
+    §log[💀 Game over!]
+§endif
+
+§if[$playerScore >= 100]
+    §log[🏆 High score achieved!]
+§endif

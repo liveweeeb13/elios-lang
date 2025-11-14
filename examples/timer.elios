@@ -1,0 +1,42 @@
+# Timer and Sleep Demonstration
+§log[⏰ Timer Demo Starting...]
+
+§var[startTime; §time[]]
+§log[Start time: $startTime]
+
+# Countdown with sleep
+§var[count; 3]
+§log[🚀 Launch countdown starting!]
+
+§if[$count > 0]
+    §log[Countdown: $count...]
+    §sleep[1000]
+    §var[count; §sub[$count;1]]
+§endif
+
+§if[$count > 0]
+    §log[Countdown: $count...]
+    §sleep[1000]
+    §var[count; §sub[$count;1]]
+§endif
+
+§if[$count > 0]
+    §log[Countdown: $count...]
+    §sleep[1000]
+    §var[count; §sub[$count;1]]
+§endif
+
+§log[🎉 Blast off!]
+
+§var[endTime; §time[]]
+§var[duration; §sub[$endTime;$startTime]]
+
+§log[Total execution time: $duration ms]
+§log[Expected: ~3000 ms]
+
+# Performance check
+§if[$duration >= 2900 && $duration <= 3100]
+    §log[✅ Timing test passed!]
+§else
+    §log[❌ Timing test failed!]
+§endif

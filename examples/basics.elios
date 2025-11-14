@@ -1,0 +1,39 @@
+# Basic Elios Language Demo
+§log[=== Elios Basic Demo ===]
+
+# Variables and logging
+§var[name; "Alice"]
+§var[age; 25]
+§var[score; 85.5]
+
+§log[Hello $name!]
+§log[Age: $age, Score: $score]
+
+# Text manipulation
+§var[message; "  Hello World!  "]
+§log[Original: "$message"]
+§log[Upper: "§upper[$message]"]
+§log[Lower: "§lower[$message]"]
+§log[Trimmed: "§trim[$message]"]
+
+# Math operations
+§var[x; 10]
+§var[y; 3]
+§log[Math Operations:]
+§log[$x + $y = §add[$x;$y]]
+§log[$x - $y = §sub[$x;$y]]
+§log[$x * $y = §mul[$x;$y]]
+§log[$x / $y = §div[$x;$y]]
+§log[Round $score: §round[$score]]
+
+# Random numbers
+§log[Random number (1-100): §random[1;100]]
+§log[Dice roll: §random[1;6]]
+
+# Date and time
+§log[Current timestamp: §time[]]
+§log[Today: §date[YYYY-MM-DD]]
+§log[Time: §date[HH:mm:ss]]
+§log[Full: §date[YYYY-MM-DD HH:mm:ss]]
+
+§log[=== Demo Complete ===]

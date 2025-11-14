@@ -1,0 +1,30 @@
+# Simple Calculator
+§log[🧮 Elios Calculator]
+§log[===================]
+
+§var[a; 15]
+§var[b; 4]
+
+§log[Input values: a=$a, b=$b]
+§log[]
+
+# Basic operations
+§log[Addition:       $a + $b = §add[$a;$b]]
+§log[Subtraction:    $a - $b = §sub[$a;$b]]
+§log[Multiplication: $a * $b = §mul[$a;$b]]
+§log[Division:       $a / $b = §div[$a;$b]]
+
+# Advanced calculations
+§var[result1; §mul[§add[$a;$b];2]]
+§log[Complex: ($a + $b) * 2 = $result1]
+
+§var[result2; §round[§div[§mul[$a;$b];3]]]
+§log[Rounded: ($a * $b) / 3 = $result2]
+
+# Random calculations
+§var[randomBase; §random[1;10]]
+§var[randomCalc; §add[$randomBase;§mul[$a;$b]]]
+§log[Random calc: $randomBase + ($a * $b) = $randomCalc]
+
+§log[===================]
+§log[Calculator finished!]
