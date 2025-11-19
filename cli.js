@@ -91,15 +91,16 @@ function showExecutionResult(success = true, error = null) {
     } else {
         console.log(chalk.red(`
 ❌ Execution Failed
-
-${chalk.white('Error:')} ${error}
         `));
-        
-        showSupportInfo();
+
+        if (error) {
+            console.log(chalk.white('Error:') + ' ' + error);
+            showSupportInfo();
+        }
     }
 }
 
-function main() {
+async function main() {
     const args = process.argv.slice(2);
     
     if (args.length === 0 || args.includes('-h') || args.includes('--help')) {
@@ -167,10 +168,11 @@ ${chalk.blue('Need help? Run:')} ${chalk.green('npx elios --support')}
         }
         
         const interpreter = new EliosInterpreter(debugMode);
-        interpreter.execute(code);
-        
-        showExecutionResult(true);
-        
+        const success = await interpreter.execute(code);
+
+        showExecutionResult(Boolean(success));
+
+        if (!success) process.exit(1);
     } catch (error) {
         showExecutionResult(false, error.message);
         process.exit(1);
