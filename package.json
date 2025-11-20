@@ -1,6 +1,6 @@
 {
   "name": "elios",
-  "version": "1.4.0",
+  "version": "1.5.1",
   "description": "Interpreter for the Elios programming language",
   "main": "index.js",
   "bin": {
@@ -42,7 +42,7 @@
     "index.js",
     "cli.js",
     "lib/*",
-    "exmaples/*",
+    "examples/*",
     "help.html"
   ]
 }
