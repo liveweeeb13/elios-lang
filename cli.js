@@ -8,7 +8,6 @@ const SyntaxValidator = require('./lib/syntax-validator');
 const Tokenizer = require('./lib/tokenizer');
 const PluginInstaller = require('./lib/plugin-installer');
 
-// Progress bar utility with real progression
 class ProgressBar {
     constructor(label, total = 100) {
         this.label = label;
@@ -18,7 +17,7 @@ class ProgressBar {
         this.width = 40;
         this.interval = null;
         this.isFinished = false;
-        this.estimatedTime = 3000; // Default estimate
+        this.estimatedTime = 1000; // Default estimated time in ms
     }
 
     start(estimatedTime = null, auto = true) {
@@ -27,7 +26,6 @@ class ProgressBar {
         this.isFinished = false;
         if (estimatedTime) this.estimatedTime = estimatedTime;
 
-        // Auto-increment progress based on elapsed time (only if auto is enabled)
         if (auto) {
             this.interval = setInterval(() => {
                 if (!this.isFinished) {
@@ -131,38 +129,39 @@ ${chalk.gray('Join our community of developers.')}
 }
 
 function listPlugins() {
-    const addonsPath = path.join(__dirname, 'addons');
-    
+    const installer = new PluginInstaller();
+    const addonsPath = installer.addonsPath;
+
     console.log(chalk.cyan(`
 🔌 Installed Plugins & Addons
     `));
-    
+
     try {
         if (!fs.existsSync(addonsPath)) {
             console.log(chalk.yellow('No addons directory found'));
             return;
         }
-        
+
         const files = fs.readdirSync(addonsPath).filter(f => f.endsWith('-elios-addon.js'));
-        
+
         if (files.length === 0) {
             console.log(chalk.yellow('No plugins installed'));
             return;
         }
-        
+
         console.log(chalk.white(`Found ${chalk.green(files.length)} plugin(s):\n`));
-        
+
         files.forEach((file) => {
             const pluginName = file.replace('-elios-addon.js', '');
             const filePath = path.join(addonsPath, file);
             const stats = fs.statSync(filePath);
             const sizeKb = (stats.size / 1024).toFixed(2);
-            
+
             console.log(chalk.green(`  ✓ ${pluginName}`));
             console.log(chalk.gray(`    Size: ${sizeKb} KB`));
-            console.log(chalk.gray(`    Path: addons/${file}\n`));
+            console.log(chalk.gray(`    Path: ${filePath}\n`));
         });
-        
+
         console.log(chalk.blue(`${chalk.bold('Total:')} ${files.length} plugin(s) loaded`));
     } catch (error) {
         console.error(chalk.red(`Error reading plugins: ${error.message}`));
@@ -199,19 +198,14 @@ async function handlePluginInstall(args) {
     const force = args.includes('--force') || args.includes('-f');
     const debug = args.includes('--debug') || args.includes('-d');
 
-    // Single progress bar for installer (label includes emoji)
     const progressBar = new ProgressBar('🔌 Installing', 100);
-    // Disable internal auto-estimation because we use real download progress
     progressBar.start(null, false);
 
-    // Provide progress callback to installer.downloadPlugin via options
     const progressCallback = (received, total, percent) => {
         if (percent !== null && !Number.isNaN(percent)) {
-            // Use the real percent reported by the downloader (clamp to 0..99)
             progressBar.current = Math.min(Math.max(Number(percent), 0), 99);
             progressBar.render();
         } else {
-            // When total size is unknown, gently increment up to 90%
             progressBar.current = Math.min(progressBar.current + 1, 90);
             progressBar.render();
         }
@@ -224,7 +218,6 @@ async function handlePluginInstall(args) {
 
         if (!success) {
             if (progressBar.interval) clearInterval(progressBar.interval);
-                // Move to new line then print error
                 process.stdout.write('\n');
                 console.log(chalk.red('❌ Installation failed'));
             process.exit(1);
@@ -232,15 +225,13 @@ async function handlePluginInstall(args) {
 
         const verified = installer.verifyPlugin(pluginName);
 
-        // Finish the bar (set to 100% but do not append newline)
         progressBar.finish();
 
-        // Nicely formatted summary below the progress bar
         process.stdout.write('\n');
         if (verified) {
             console.log(chalk.bgGreen.black('  SUCCESS  ') + ' ' + chalk.green.bold('Plugin installed successfully'));
             const pluginFile = `${pluginName}-elios-addon.js`;
-            const location = `addons/${pluginFile}`;
+            const location = path.join(installer.addonsPath, pluginFile);
             const versionLabel = version ? version : 'latest';
             console.log(chalk.gray(`   • Name: `) + chalk.white(pluginName) + chalk.gray(`    • Location: `) + chalk.white(location));
             console.log(chalk.gray(`   • Version: `) + chalk.white(versionLabel));
@@ -270,7 +261,6 @@ async function handlePluginUninstall(args) {
 
     const installer = new PluginInstaller();
 
-    // Single progress bar for uninstaller (label includes emoji)
     const progressBar = new ProgressBar('🗑️ Removing', 100);
     progressBar.start(1500);
 
@@ -279,7 +269,6 @@ async function handlePluginUninstall(args) {
         const success = installer.uninstallPlugin(pluginName);
         const uninstallTime = Math.max(Date.now() - uninstallStart, 800);
         
-        // Update progress bar with actual time
         progressBar.estimatedTime = uninstallTime;
 
         if (!success) {
